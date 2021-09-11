@@ -1,25 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <div style={{ margin: '20px', height: '500px' }}>
+
+            </div>
+            <p style={{ textAlign: 'center', fontSize: '10pt', color: "#808080" }}>Developed by Nathan Taylor. Contact at nathan.alt562@gmail.com</p>
+        </div>
+    );
 }
 
 export default App;
