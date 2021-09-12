@@ -1,0 +1,18 @@
+.item-table {
+    border: solid;
+    border-color: black;
+    width: 100%;
+}
+
+.item-table-header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.item-name {
+
+}
+
+.item-expire-date {
+    text-align: right;
+}
