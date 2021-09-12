@@ -14,7 +14,7 @@ class Database {
 	}
 
 	static async allFoodItemsListener(func) {
-		const q = query(collection(db, 'food-items'), where('user', '==', (await Authentication.getUser()).email), orderBy('expirationDate', 'desc'));
+		const q = query(collection(db, 'food-items'), where('user', '==', (await Authentication.getUser()).email), orderBy('expirationDate', 'asc'));
 		this.snap = onSnapshot(q, func)
 	}
 
@@ -23,13 +23,6 @@ class Database {
     }
 
 	static updateItem(itemID, foodItem) {
-
-
-		foodItem = {
-			expirationDate: new Date(new Date().setDate(new Date().getDate() + 5)),
-			itemName: "tomato"
-		}
-
 		updateDoc(doc(db, 'food-items', itemID), { ...foodItem })
 			.then((docref) => console.log("updated", itemID))
 			.catch((error) => console.log(error));

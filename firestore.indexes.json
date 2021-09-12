@@ -1,4 +1,19 @@
 {
-  "indexes": [],
+  "indexes": [
+	{
+      "collectionGroup": "food-items",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "user",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "expirationDate",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }

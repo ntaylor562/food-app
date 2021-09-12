@@ -1,0 +1,50 @@
+.item-table-mobile {
+    width: 100%;
+    border: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: lightgray;
+}
+.item-table-browser {
+    width: 100%;
+}
+
+.item-table-header-mobile {
+    font-weight: bold;
+    text-align: left;
+    display: flex;
+    line-height: 50px;
+    margin-inline: 20px;
+    border-bottom: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: lightgray;
+}
+
+.item-table-header-browser {
+    font-weight: bold;
+    text-align: center;
+}
+
+.item-name {
+    width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.item-expire-date {
+    text-align: right;
+    width: 200px;
+}
+
+.item-row {
+    height: 70px;
+    background: white;
+    display: flex;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: lightgray;
+    align-items: center;
+}
+
+.item-quantity {
+    text-align: center;
+}
