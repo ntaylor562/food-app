@@ -1,6 +1,6 @@
-import { auth, provider, signInMethod, persistence } from './firebase';
-import { getRedirectResult, onAuthStateChanged, signOut } from 'firebase/auth';
-import { getFirestore, collection, setDoc, doc } from 'firebase/firestore';
+import { auth, provider, signInMethod } from './firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { getFirestore, setDoc, doc } from 'firebase/firestore';
 
 //Handles sign in, sign out, and getting the user's data
 class Authentication {
@@ -8,7 +8,7 @@ class Authentication {
     static user = null;
 
     static signIn() {
-        if (!auth.currentUser) signInMethod(auth, provider).then(()=>console.log("signed in")).catch((error) => {
+        if (!auth.currentUser) signInMethod(auth, provider).catch((error) => {
             console.error(error.code, error.message);
         })
     }
@@ -28,13 +28,12 @@ class Authentication {
         }
 }
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
     if (!user) {
         Authentication.signIn();
     } else {
         Authentication.user = user;
-        setDoc(doc(getFirestore(), 'users', Authentication.user.email), {});
-        setDoc(doc(getFirestore(), 'all-options', Authentication.user.email), {});
+        setDoc(doc(getFirestore(), 'users', user.email), {});
     }
 })
 

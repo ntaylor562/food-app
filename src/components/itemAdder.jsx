@@ -46,11 +46,11 @@ class ItemAdder extends Component {
         this.setState(prevState => {
             let tempQuantities = prevState.quantities;
             let temp = {};
-            val.map((v) => {
+            for (let v of val) {
                 v = v.toLowerCase().trim();
                 if (!(v in prevState.quantities)) tempQuantities[v] = 1;
                 temp[v] = 0;
-            })
+            }
             return { inputValue: Object.keys(temp), quantities: tempQuantities }
         });
     }

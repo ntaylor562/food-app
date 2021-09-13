@@ -1,6 +1,6 @@
 import { db } from './firebase';
 import Authentication from './auth';
-import { collection, doc, getDoc, addDoc, updateDoc, onSnapshot, deleteDoc, query, where, orderBy} from 'firebase/firestore';
+import { collection, doc, getDoc, setDoc, addDoc, updateDoc, onSnapshot, deleteDoc, query, where, orderBy} from 'firebase/firestore';
 
 //Handles database functionality
 //Allows creating, reading, updating, and removing of items
@@ -22,7 +22,7 @@ class Database {
 			user: userEmail,
 			show: true
 		})
-			.catch((error) => console.log(error));
+			.catch((error) => console.error(error));
 	}
 
 	//Subscribes func to the firestore listener
@@ -36,9 +36,18 @@ class Database {
 		this.snap();
 	}
 
+	//If the user doesn't have a document representing options, one is created
+	static async initializeOptions() {
+		if (!(await getDoc(doc(db, 'all-options', (await Authentication.getUser()).email))).exists())
+			await setDoc(doc(db, 'all-options', (await Authentication.getUser()).email), {});
+
+		return (await getDoc(doc(db, 'all-options', (await Authentication.getUser()).email))).data();
+    }
+
 	//Gets all autocomplete options for the current user
 	static async getAllOptions() {
-		if (this.allOptions === undefined) this.allOptions = (await getDoc(doc(db, 'all-options', (await Authentication.getUser()).email))).data();
+		if (this.allOptions === undefined) this.allOptions = await this.initializeOptions();
+
 		return this.allOptions;
 	}
 
@@ -46,17 +55,16 @@ class Database {
 	static async addOption(foodItem) {
 		if (this.allOptions === undefined) this.allOptions = (await getDoc(doc(db, 'all-options', (await Authentication.getUser()).email))).data();
 
-		console.log(this.allOptions);
-
 		if (!(foodItem.itemName in this.allOptions)) this.allOptions[foodItem.itemName] = foodItem.quantity;
 		else this.allOptions[foodItem.itemName] += foodItem.quantity;
+
 		updateDoc(doc(db, 'all-options', (await Authentication.getUser()).email), this.allOptions)
     }
 
 	//Updates a food item
 	static updateItem(itemID, foodItem) {
 		updateDoc(doc(db, 'food-items', itemID), foodItem)
-			.catch((error) => console.log(error));
+			.catch((error) => console.error(error));
 	}
 
 	//Hides a food item
