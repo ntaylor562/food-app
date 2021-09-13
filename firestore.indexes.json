@@ -5,6 +5,38 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
+          "fieldPath": "show",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "user",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "expirationDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "food-items",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "user",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "expirationDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "food-items",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
           "fieldPath": "user",
           "order": "ASCENDING"
         },

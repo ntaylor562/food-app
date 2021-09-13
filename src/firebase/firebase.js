@@ -3,7 +3,6 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from 'firebase/firestore';
 import { getAuth, signInWithRedirect, GoogleAuthProvider, browserSessionPersistence, inMemoryPersistence } from "firebase/auth";
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyDYyzCzlq4DWio0h2Xj5JHmhh_zpiCeJMI",
     authDomain: "food-app-0.firebaseapp.com",
@@ -15,7 +14,7 @@ const firebaseConfig = {
 };
 
 // Exports
-export const firebase = initializeApp(firebaseConfig);
+export const firebase = initializeApp(firebaseConfig); //Initializing app
 export const analytics = getAnalytics(firebase);
 export const db = getFirestore();
 export const auth = getAuth();

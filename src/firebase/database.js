@@ -1,33 +1,70 @@
 import { db } from './firebase';
 import Authentication from './auth';
-import { collection, doc, addDoc, updateDoc, onSnapshot, deleteDoc, query, where, orderBy} from 'firebase/firestore';
+import { collection, doc, getDoc, addDoc, updateDoc, onSnapshot, deleteDoc, query, where, orderBy} from 'firebase/firestore';
 
+//Handles database functionality
+//Allows creating, reading, updating, and removing of items
+//Handles the 'all options' data that provides data for autocomplete
 class Database {
+	//The food item listener
 	static snap = null;
 
+	//JS Object containing all autocomplete options
+	static allOptions = undefined;
+
+	//Adds item to user's list
 	static addItem(userEmail, foodItem) {
+		this.addOption(foodItem);
+
 		addDoc(collection(db, 'food-items'), {
 			dateAdded: new Date(),
 			...foodItem,
-			user: userEmail
-		}).then((docref) => console.log("added", docref.id)).catch((error) => console.log(error));
-	}
-
-	static async allFoodItemsListener(func) {
-		const q = query(collection(db, 'food-items'), where('user', '==', (await Authentication.getUser()).email), orderBy('expirationDate', 'asc'));
-		this.snap = onSnapshot(q, func)
-	}
-
-	static unsub() {
-		this.snap();
-    }
-
-	static updateItem(itemID, foodItem) {
-		updateDoc(doc(db, 'food-items', itemID), { ...foodItem })
-			.then((docref) => console.log("updated", itemID))
+			user: userEmail,
+			show: true
+		})
 			.catch((error) => console.log(error));
 	}
 
+	//Subscribes func to the firestore listener
+	static async allFoodItemsListener(func) {
+		const q = query(collection(db, 'food-items'), where('user', '==', (await Authentication.getUser()).email), where('show', '==', true), orderBy('expirationDate', 'asc'));
+		this.snap = onSnapshot(q, func)
+	}
+
+	//Unsubscribes the food item listener
+	static unsub() {
+		this.snap();
+	}
+
+	//Gets all autocomplete options for the current user
+	static async getAllOptions() {
+		if (this.allOptions === undefined) this.allOptions = (await getDoc(doc(db, 'all-options', (await Authentication.getUser()).email))).data();
+		return this.allOptions;
+	}
+
+	//Adds an option to the user's autocomplete options
+	static async addOption(foodItem) {
+		if (this.allOptions === undefined) this.allOptions = (await getDoc(doc(db, 'all-options', (await Authentication.getUser()).email))).data();
+
+		console.log(this.allOptions);
+
+		if (!(foodItem.itemName in this.allOptions)) this.allOptions[foodItem.itemName] = foodItem.quantity;
+		else this.allOptions[foodItem.itemName] += foodItem.quantity;
+		updateDoc(doc(db, 'all-options', (await Authentication.getUser()).email), this.allOptions)
+    }
+
+	//Updates a food item
+	static updateItem(itemID, foodItem) {
+		updateDoc(doc(db, 'food-items', itemID), foodItem)
+			.catch((error) => console.log(error));
+	}
+
+	//Hides a food item
+	static hideItem(itemID) {
+		updateDoc(doc(db, 'food-items', itemID), { show: false })
+    }
+
+	//Removes an item
 	static removeItem(itemID) {
 		deleteDoc(doc(db, "food-items", itemID));
 	}

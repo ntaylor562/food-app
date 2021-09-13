@@ -4,6 +4,7 @@ import { getFirestore, collection, setDoc, doc } from 'firebase/firestore';
 
 //Handles sign in, sign out, and getting the user's data
 class Authentication {
+    //User object obtained firebase after signing in
     static user = null;
 
     static signIn() {
@@ -16,6 +17,7 @@ class Authentication {
         signOut(auth);
     }
 
+    //Returns a promise that gives a user object
     static getUser() {
             return new Promise((resolve, reject) => {
                 const unsubscribe = auth.onAuthStateChanged(user => {
@@ -31,7 +33,8 @@ onAuthStateChanged(auth, (user) => {
         Authentication.signIn();
     } else {
         Authentication.user = user;
-        setDoc(doc(getFirestore(), 'users', Authentication.user.email), {})
+        setDoc(doc(getFirestore(), 'users', Authentication.user.email), {});
+        setDoc(doc(getFirestore(), 'all-options', Authentication.user.email), {});
     }
 })
 

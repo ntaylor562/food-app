@@ -48,3 +48,17 @@
 .item-quantity {
     text-align: center;
 }
+
+.incdecbutton {
+    height: 35px;
+    width: 35px;
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+    color: gray;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 15pt;
+}
