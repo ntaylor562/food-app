@@ -58,7 +58,7 @@ class Database {
 		if (!(foodItem.itemName in this.allOptions)) this.allOptions[foodItem.itemName] = foodItem.quantity;
 		else this.allOptions[foodItem.itemName] += foodItem.quantity;
 
-		updateDoc(doc(db, 'all-options', (await Authentication.getUser()).email), this.allOptions)
+		await updateDoc(doc(db, 'all-options', (await Authentication.getUser()).email), this.allOptions)
     }
 
 	//Updates a food item

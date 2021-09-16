@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -124,6 +126,20 @@ class ItemList extends Component {
 	//Mobile view of the table
 	getMobileView = () => {
 		return (
+			<React.Fragment>
+				<Autocomplete options={Object.keys(this.state.items).map((key) =>
+					this.state.items[key].itemName + " (" +
+					this.state.items[key].quantity + ") expires on " +
+					this.formatDate(this.state.items[key].expirationDate.toDate())
+				)}
+					autoComplete
+					openOnFocus
+					selectOnFocus
+					handleHomeEndKeys
+					freeSolo
+					renderInput={(params) => {
+						return <TextField {...params} label='Search' margin='normal' />
+					}} />
 			<div className="item-table">
 				<div>
 					<div className="item-table-header-mobile">
@@ -151,9 +167,8 @@ class ItemList extends Component {
 						</div>
 					);
 				})}
-
-
-			</div>
+				</div>
+			</React.Fragment>
 		);
 	}
 
