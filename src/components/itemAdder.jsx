@@ -43,15 +43,20 @@ class ItemAdder extends Component {
 
     //Saves data from the text input for what items are being added
     setInputValue = (val) => {
+        let temp = []; //Holds values in val but without duplicates
+        let tempValObj = {}; //Helps determine whether an element is a duplicate
         this.setState(prevState => {
-            let tempQuantities = prevState.quantities;
-            let temp = {};
-            for (let v of val) {
-                v = v.toLowerCase().trim();
-                if (!(v in prevState.quantities)) tempQuantities[v] = 1;
-                temp[v] = 0;
+            for (let i = 0; i < val.length; ++i) {
+                val[i] = val[i].toLowerCase().trim();
+                if (!(val[i] in prevState.quantities)) prevState.quantities[val[i]] = 1;
+
+                if (!(val[i] in tempValObj)) {
+                    tempValObj[val[i]] = true;
+                    temp.push(val[i]);
+                }
             }
-            return { inputValue: Object.keys(temp), quantities: tempQuantities }
+            
+            return { inputValue: temp, quantities: prevState.quantities }
         });
     }
 
@@ -115,6 +120,11 @@ class ItemAdder extends Component {
 
     //Gets the item adder box for mobile devices
     getMobileView = () => {
+        //this.state.inputValue.reverse() was giving me issues so I had to do this
+        let inputListReversed = [];
+        for (let i = this.state.inputValue.length - 1; i >= 0; --i)
+            inputListReversed.push(this.state.inputValue[i]);
+
         return (
             this.state.showAdder ?
                 <div className="adder-box">
@@ -134,7 +144,7 @@ class ItemAdder extends Component {
                     <br />
                     <Table>
                         <tbody>
-                            {this.state.inputValue.map((itemName) => {
+                            {inputListReversed.map((itemName) => {
                                 return (
                                     <tr key={itemName} style={{ paddingTop: '10px' }}>
                                         <td>
