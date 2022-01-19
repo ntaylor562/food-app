@@ -7,13 +7,14 @@ class Authentication {
     //User object obtained firebase after signing in
     static user = null;
 
-    static signIn() {
+    static logIn() {
         if (!auth.currentUser) signInMethod(auth, provider).catch((error) => {
             console.error(error.code, error.message);
         })
     }
 
-    static signOut() {
+    static logOut() {
+        console.log("SIGNING OUT");
         signOut(auth);
     }
 
@@ -30,7 +31,7 @@ class Authentication {
 
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
-        Authentication.signIn();
+        Authentication.logIn();
     } else {
         Authentication.user = user;
         setDoc(doc(getFirestore(), 'users', user.email), {});

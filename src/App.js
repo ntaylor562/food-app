@@ -1,4 +1,5 @@
 import './styles/App.css';
+import Header from './components/header';
 import ItemAdder from './components/itemAdder';
 import ItemList from './components/itemList';
 
@@ -7,7 +8,7 @@ function App() {
     return (
         <div className="App">
             <div style={{ margin: '20px', height: 'auto' }}>
-                <h2>Food Tracker</h2>
+                <Header />
                 <hr />
                 <br />
                 <ItemAdder />
